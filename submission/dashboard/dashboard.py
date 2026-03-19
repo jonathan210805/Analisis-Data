@@ -10,7 +10,7 @@ st.set_page_config(page_title="Bike Sharing Dashboard", layout="wide")
 
 #Load Data 
 def load_data():
-    main_df = pd.read_csv("dashboard/main_data.csv")
+    main_df = pd.read_csv("submission/dashboard/main_data.csv")
 
     season_map  = {1:'Spring', 2:'Summer', 3:'Fall', 4:'Winter'}
     weather_map = {1:'Clear', 2:'Cloudy', 3:'Light Rain/Snow', 4:'Heavy Rain/Snow'}
