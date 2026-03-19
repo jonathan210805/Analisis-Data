@@ -10,22 +10,24 @@ st.set_page_config(page_title="Bike Sharing Dashboard", layout="wide")
 
 #Load Data 
 def load_data():
-    day_df  = pd.read_csv("data/day.csv")
-    hour_df = pd.read_csv("data/hour.csv")
+    main_df = pd.read_csv("dashboard/main_data.csv")
 
     season_map  = {1:'Spring', 2:'Summer', 3:'Fall', 4:'Winter'}
     weather_map = {1:'Clear', 2:'Cloudy', 3:'Light Rain/Snow', 4:'Heavy Rain/Snow'}
-    weekday_map = {0:'Sunday', 1:'Monday', 2:'Tuesday', 3:'Wednesday',4:'Thursday', 5:'Friday', 6:'Saturday'}
+    weekday_map = {0:'Sunday', 1:'Monday', 2:'Tuesday', 3:'Wednesday', 4:'Thursday', 5:'Friday', 6:'Saturday'}
 
-# mapping dan mengembalikan nilai aktual
-    for df in [day_df, hour_df]:
-        df['dteday']        = pd.to_datetime(df['dteday'])
-        df['season_label']  = df['season'].map(season_map)
-        df['weather_label'] = df['weathersit'].map(weather_map)
-        df['weekday_label'] = df['weekday'].map(weekday_map)
-        df['temp_actual']      = df['temp'] * 41
-        df['hum_actual']       = df['hum'] * 100
-        df['windspeed_actual'] = df['windspeed'] * 67
+    main_df['dteday']        = pd.to_datetime(main_df['dteday'])
+    main_df['season_label']  = main_df['season'].map(season_map)
+    main_df['weather_label'] = main_df['weathersit'].map(weather_map)
+    main_df['weekday_label'] = main_df['weekday'].map(weekday_map)
+    main_df['temp_actual']      = main_df['temp'] * 41
+    main_df['hum_actual']       = main_df['hum'] * 100
+    main_df['windspeed_actual'] = main_df['windspeed'] * 67
+
+    # Pisahkan berdasarkan kolom 'hr'
+    day_df  = main_df[main_df['hr'].isna()].copy()
+    hour_df = main_df[main_df['hr'].notna()].copy()
+    hour_df['hr'] = hour_df['hr'].astype(int)
 
     # Clustering jam
     def cluster_hour(hour):
